@@ -27,7 +27,7 @@ Though there **is** room for improvement. Will continue working on it.
 - [ ] Clearing clipboard 30 seconds after copying a password to prevent clipboard hijacking
 - [ ] Per-entry decryption
 - [ ] Timeout lock
-- [ ] Storing the database and the key in `%APPDATA%`
+- [ ] Storing the database and the key in `%LOCALAPPDATA%`
 > *I'm working on implementing all of the features*
 
 ## Getting Started
