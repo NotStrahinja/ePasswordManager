@@ -3,13 +3,12 @@
 ![Static Badge](https://img.shields.io/badge/Version-1.0-blue) ![Static Badge](https://img.shields.io/badge/License-GNU_General_Public_License_V3.0-green) 
 
 
-## ePasswordManager
 
 To put it simply: **ePasswordManager** is a free open-source password manager for Windows built in Rust. It lets you securely generate, store, and manage passwords in an encrypted database that's locally stored on your computer.
 
 ## Is it secure?
 
-Yes. The app uses the DPAPI (a part of Windows) that will securely encrypt and store the database locally.
+The app uses the DPAPI (a part of Windows) that will securely encrypt and store the database locally.
 The <ins>password generation</ins> feature of this app helps to provide a customizable and reliable option for storing *highly random* and *obfuscated* passwords
 that are accessible to you with **only one click**.
 Though there **is** room for improvement. Will continue working on it.
@@ -47,9 +46,9 @@ cargo build --release
 cargo run --release
 ```
 
-### Screenshots
-<img width="802" height="632" alt="image" src="https://github.com/user-attachments/assets/196101ab-65ce-48ba-96e1-3afdd338a8eb" />
-<img width="802" height="632" alt="image" src="https://github.com/user-attachments/assets/b7b1bf17-a7f8-4e40-aee1-26a2944d7d68" />
+## Screenshots
+<img width="802" height="632" alt="Main UI - Password Manager" src="https://github.com/user-attachments/assets/196101ab-65ce-48ba-96e1-3afdd338a8eb" />
+<img width="802" height="632" alt="Main UI - Generation Options" src="https://github.com/user-attachments/assets/b7b1bf17-a7f8-4e40-aee1-26a2944d7d68" />
 
 
 
@@ -60,7 +59,12 @@ cargo run --release
 ## Want to contribute?
 
 Great. I've done most of the work to get the base app running, and I'm currently aiming to improve the security.
-QOL changes/features and recommendations are welcome.
+QOL changes/features, recommendations and feedback are welcome.
+
+- Check the [issues](https://github.com/NotStrahinja/ePasswordManager/issues) for open tasks and bugs.
+- Look for the `good first issues` labels if you're new
+- Open a discussion or issue for feature suggestions
+- Submit a pull request
 
 ## License
 
