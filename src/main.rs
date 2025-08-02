@@ -147,9 +147,23 @@ impl App for PasswordApp {
                             ui.label(display_pw);
 
                             ui.horizontal(|ui| {
+                                //uwkx
                                 if ui.button("Copy").clicked() {
-                                    ctx.copy_text(password.clone());
+                                    let copied_password = password.clone();
+                                    ctx.copy_text(copied_password.clone());
+                                    std::thread::spawn(move || {
+                                        std::thread::sleep(std::time::Duration::from_secs(30));
+                                        #[cfg(target_os = "windows")]
+                                        {
+                                            use arboard::Clipboard;
+                                            let mut clipboard = Clipboard::new().ok();
+                                            if let Some(ref mut cb) = clipboard {
+                                                let _ = cb.set_text("");
+                                            }
+                                        }
+                                    });
                                 }
+
                                 if ui.button("Delete").clicked() {
                                     to_delete.push(name.clone());
                                 }
