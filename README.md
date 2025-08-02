@@ -28,7 +28,9 @@ Though there **is** room for improvement. Will continue working on it.
 - [ ] Storing the database and the key in `%APPDATA%`
 
 ### Screenshots
-*to add*
+<img width="802" height="632" alt="image" src="https://github.com/user-attachments/assets/196101ab-65ce-48ba-96e1-3afdd338a8eb" />
+<img width="802" height="632" alt="image" src="https://github.com/user-attachments/assets/b7b1bf17-a7f8-4e40-aee1-26a2944d7d68" />
+
 
 > [!NOTE]
 > This was tested on a Windows 11 25H2 system. Some features may not work on older systems such as Windows 8.
