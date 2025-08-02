@@ -26,6 +26,7 @@ Though there **is** room for improvement. Will continue working on it.
 - [ ] Per-entry decryption
 - [ ] Timeout lock
 - [ ] Storing the database and the key in `%APPDATA%`
+> *I'm working on implementing all of the features*
 
 ### Screenshots
 <img width="802" height="632" alt="image" src="https://github.com/user-attachments/assets/196101ab-65ce-48ba-96e1-3afdd338a8eb" />
