@@ -1,5 +1,8 @@
 # ePasswordManager
 
+![Static Badge](https://img.shields.io/badge/Version-1.0-blue) ![Static Badge](https://img.shields.io/badge/License-GNU_General_Public_License_V3.0-green) 
+
+
 ## ePasswordManager
 
 ...is a free open-source password manager for Windows built in Rust. It lets you securely generate, store, and manage passwords in an encrypted database that's locally stored on your computer.
