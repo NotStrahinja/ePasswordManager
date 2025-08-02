@@ -2,10 +2,9 @@
 
 ## What is it?
 It is a free, open-source password manager written in Rust, aimed at Windows.
-Contributors are welcome.
 
-## How does it work?
-It uses the DPAPI on Windows to securely store the password database along with the key.
+## What does it do?
+It lets you generate or add your own passwords, stores them in a database and later encrypts them.
 
 ## Is it secure?
 Yes. Unless there are attacks specifically targeted at this program, your passwords are safe.
