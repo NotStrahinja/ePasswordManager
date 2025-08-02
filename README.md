@@ -5,17 +5,17 @@
 
 ## ePasswordManager
 
-...is a free open-source password manager for Windows built in Rust. It lets you securely generate, store, and manage passwords in an encrypted database that's locally stored on your computer.
+To put it simply: **ePasswordManager** is a free open-source password manager for Windows built in Rust. It lets you securely generate, store, and manage passwords in an encrypted database that's locally stored on your computer.
 
 ## Is it secure?
 
-Yes. Unless there are attacks specifically targeted at this program, your passwords are safe.
+Yes. The app uses the DPAPI (a part of Windows) that will securely encrypt and store the database locally.
 The <ins>password generation</ins> feature of this app helps to provide a customizable and reliable option for storing *highly random* and *obfuscated* passwords
 that are accessible to you with **only one click**.
 Though there **is** room for improvement. Will continue working on it.
 
 > [!WARNING]
-> It is less secure **if you don't have a password/PIN on your Windows device**. It is recommended to set one if no password/PIN is present.
+> It is less secure **if you don't have a password/PIN on your Windows device**. It is highly recommended to use one (unless you want to get hacked).
 
 ## Features
 
@@ -44,7 +44,7 @@ cargo build --release
 ```
 3. Run it:
 ```bash
-cargo run
+cargo run --release
 ```
 
 ### Screenshots
