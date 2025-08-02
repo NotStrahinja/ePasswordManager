@@ -28,6 +28,8 @@ Though there **is** room for improvement. Will continue working on it.
 - [ ] Per-entry decryption
 - [ ] Timeout lock
 - [ ] Storing the database and the key in `%LOCALAPPDATA%`
+- [ ] Adding a <ins>master password</ins> if the machine has multiple users
+- [ ] Memory-hard KDF (specifically Argon2)
 > *I'm working on implementing all of the features*
 
 ## Getting Started
