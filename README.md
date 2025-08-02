@@ -2,6 +2,7 @@
 
 ## What is it?
 It is a free, open-source password manager written in Rust, aimed at Windows.
+Contributors are welcome.
 
 ## How does it work?
 It uses the DPAPI on Windows to securely store the password database along with the key.
@@ -33,7 +34,13 @@ Though there **is** room for improvement. Will continue working on it.
 <img width="802" height="632" alt="image" src="https://github.com/user-attachments/assets/b7b1bf17-a7f8-4e40-aee1-26a2944d7d68" />
 
 
+
+
 > [!NOTE]
 > This was tested on a Windows 11 25H2 system. Some features may not work on older systems such as Windows 8.
+
+## Want to contribute?
+Great. I've done most of the work to get the base app running, and I'm currently aiming to improve the security.
+QOL changes/features and recommendations are welcome.
 
 *Linux support coming soon...*
