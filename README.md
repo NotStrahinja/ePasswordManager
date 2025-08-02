@@ -61,7 +61,7 @@ cargo run --release
 Great. I've done most of the work to get the base app running, and I'm currently aiming to improve the security.
 QOL changes/features, recommendations and feedback are welcome.
 
-- Check the [issues](https://github.com/NotStrahinja/ePasswordManager/issues) for open tasks and bugs.
+- Check the [issues](https://github.com/NotStrahinja/ePasswordManager/issues) for open tasks and bugs
 - Check `good first issue` in the issues section
 - Open a discussion or issue for feature suggestions
 - Submit a pull request
