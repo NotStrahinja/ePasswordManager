@@ -30,7 +30,7 @@ Though there **is** room for improvement. Will continue working on it.
 - [ ] Storing the database and the key in `%LOCALAPPDATA%`
 - [ ] Adding a <ins>master password</ins> if the machine has multiple users
 - [ ] Memory-hard KDF (specifically Argon2)
-> *I'm working on implementing all of the features*
+> *You can check all of the features not implemented in the issues section, more info [here](https://github.com/NotStrahinja/ePasswordManager?tab=readme-ov-file#want-to-contribute)*
 
 ## Getting Started
 
