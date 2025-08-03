@@ -7,6 +7,8 @@ use eframe::{egui, App};
 use std::collections::HashMap;
 use serde::{Serialize, Deserialize};
 use egui::RichText;
+use std::time::Instant;
+use std::time::Duration;
 
 fn verify_user_sync() -> Option<bool> {
     let availability = UserConsentVerifier::CheckAvailabilityAsync().ok()?.get().ok()?;
@@ -74,6 +76,7 @@ struct PasswordApp {
     inc_lower: bool,
     inc_spec: bool,
     inc_num: bool,
+    lock_timeout: Option<Instant>,
 }
 
 impl PasswordApp {
@@ -120,6 +123,13 @@ impl PasswordApp {
 
 impl App for PasswordApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // Lock after some time
+        if let Some(timeout) = self.lock_timeout {
+            if Instant::now() > timeout {
+                self.unlocked = false;
+                self.lock_timeout = None;
+            }
+        }
         egui::CentralPanel::default().show(ctx, |ui| {
             if self.unlocked {
                 ui.label(RichText::new("Welcome to ePasswordManager!").size(26.0).strong());
@@ -147,7 +157,7 @@ impl App for PasswordApp {
                             ui.label(display_pw);
 
                             ui.horizontal(|ui| {
-                                //uwkx
+                                // --- uwkx ---
                                 if ui.button("Copy").clicked() {
                                     let copied_password = password.clone();
                                     ctx.copy_text(copied_password.clone());
@@ -163,6 +173,7 @@ impl App for PasswordApp {
                                         }
                                     });
                                 }
+                                // -----------
 
                                 if ui.button("Delete").clicked() {
                                     to_delete.push(name.clone());
@@ -218,6 +229,7 @@ impl App for PasswordApp {
                             self.key = Some(key);
                             self.load_vault();
                             self.unlocked = true;
+                            self.lock_timeout = Some(Instant::now() + Duration::from_secs(10*60)); // set the timeout to 10 minutes
                         } else {
                             ui.label("Failed to load encryption key.");
                         }
