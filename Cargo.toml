@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 aes-gcm = "0.10.3"
+arboard = "3.6.0"
 eframe = "0.32.0"
 rand = "0.8"
 serde = { version = "1.0", features = ["derive"] }
