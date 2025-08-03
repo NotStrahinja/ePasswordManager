@@ -1,6 +1,6 @@
 # ePasswordManager
 
-![Static Badge](https://img.shields.io/badge/Version-1.1-blue) ![Static Badge](https://img.shields.io/badge/License-GNU_General_Public_License_V3.0-green) 
+![Static Badge](https://img.shields.io/badge/Version-1.2-blue) ![Static Badge](https://img.shields.io/badge/License-GNU_General_Public_License_V3.0-green) 
 
 
 
