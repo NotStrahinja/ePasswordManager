@@ -26,7 +26,7 @@ Though there **is** room for improvement. Will continue working on it.
 - [ ] Zeroing out memory of decrypted passwords to prevent RAM dumps
 - [x] Clearing clipboard 30 seconds after copying a password to prevent clipboard hijacking
 - [ ] Per-entry decryption
-- [ ] Timeout lock
+- [x] Timeout lock
 - [ ] Storing the database and the key in `%LOCALAPPDATA%`
 - [ ] Adding a <ins>master password</ins> if the machine has multiple users
 - [ ] Memory-hard KDF (specifically Argon2)
