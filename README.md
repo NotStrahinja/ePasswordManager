@@ -18,7 +18,7 @@ Though there **is** room for improvement. Will continue working on it.
 
 ## Features
 
-- [x] Encrypted database of passwords with DPAPI (will implement AES soon)
+- [x] Encrypted database of passwords with DPAPI (~~will implement AES soon~~)
 - [x] Prompting for password/PIN for *extra security*
 - [x] **Password generation**
 - [x] **Advanced options** for the password generation
