@@ -1,6 +1,6 @@
 # ePasswordManager
 
-![Static Badge](https://img.shields.io/badge/Version-1.2-blue) ![Static Badge](https://img.shields.io/badge/License-GNU_General_Public_License_V3.0-green) 
+![Static Badge](https://img.shields.io/badge/Version-1.3-blue) ![Static Badge](https://img.shields.io/badge/License-GNU_General_Public_License_V3.0-green) 
 
 
 
@@ -22,10 +22,10 @@ Though there **is** room for improvement. Will continue working on it.
 - [x] Prompting for password/PIN for *extra security*
 - [x] **Password generation**
 - [x] **Advanced options** for the password generation
-- [ ] AES encryption of the database
-- [ ] Zeroing out memory of decrypted passwords to prevent RAM dumps
+- [x] AES encryption of the database
+- [x] Zeroing out memory of decrypted passwords to prevent RAM dumps
 - [x] Clearing clipboard 30 seconds after copying a password to prevent clipboard hijacking
-- [ ] Per-entry decryption
+- [x] Per-entry decryption
 - [x] Timeout lock
 - [ ] Storing the database and the key in `%LOCALAPPDATA%`
 - [ ] Adding a <ins>master password</ins> if the machine has multiple users
