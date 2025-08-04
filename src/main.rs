@@ -1,5 +1,9 @@
 use windows_dpapi::{encrypt_data, decrypt_data, Scope};
 use windows::Security::Credentials::UI::{UserConsentVerifier, UserConsentVerificationResult, UserConsentVerifierAvailability};
+use aes_gcm::{Aes256Gcm,  Nonce};
+use aes_gcm::aead::{Aead, KeyInit};
+use rand::RngCore;
+use zeroize::Zeroize;
 use rand::Rng;
 use std::fs;
 use std::path::Path;
@@ -24,17 +28,37 @@ fn verify_user_sync() -> Option<bool> {
 
 const KEY_FILE: &str = "vault.key";
 const VAULT_FILE: &str = "vault.dat";
+const NONCE_SIZE: usize = 12;
 
-fn save_vault(vault: &Vault, _key: &[u8; 32]) -> Option<()> {
+fn save_vault(vault: &Vault, key: &[u8; 32]) -> Option<()> {
     let serialized = serde_json::to_vec(vault).ok()?;
-    let encrypted = encrypt_data(&serialized, Scope::User).ok()?;
-    fs::write(VAULT_FILE, &encrypted).ok()?;
+
+    let cipher = Aes256Gcm::new(aes_gcm::Key::<Aes256Gcm>::from_slice(key));
+    let mut nonce_bytes = [0u8; NONCE_SIZE];
+    rand::thread_rng().fill_bytes(&mut nonce_bytes);
+    let nonce = Nonce::from_slice(&nonce_bytes);
+
+    let ciphertext = cipher.encrypt(nonce, serialized.as_ref()).ok()?;
+
+    let mut data = nonce_bytes.to_vec();
+    data.extend(ciphertext);
+
+    fs::write(VAULT_FILE, &data).ok()?;
     Some(())
 }
 
-fn load_vault(_key: &[u8; 32]) -> Option<Vault> {
-    let encrypted = fs::read(VAULT_FILE).ok()?;
-    let decrypted = decrypt_data(&encrypted, Scope::User).ok()?;
+fn load_vault(key: &[u8; 32]) -> Option<Vault> {
+    let data = fs::read(VAULT_FILE).ok()?;
+
+    if data.len() < NONCE_SIZE {
+        return None;
+    }
+
+    let (nonce_bytes, ciphertext) = data.split_at(NONCE_SIZE);
+    let cipher = Aes256Gcm::new(aes_gcm::Key::<Aes256Gcm>::from_slice(key));
+    let nonce = Nonce::from_slice(nonce_bytes);
+
+    let decrypted = cipher.decrypt(nonce, ciphertext).ok()?;
     serde_json::from_slice(&decrypted).ok()
 }
 
@@ -60,7 +84,7 @@ fn main() -> eframe::Result<()> {
 
 #[derive(Serialize, Deserialize, Default)]
 struct Vault {
-    entries: HashMap<String, String>,
+    entries: HashMap<String, Vec<u8>>,
 }
 
 #[derive(Default)]
@@ -119,6 +143,36 @@ impl PasswordApp {
             })
             .collect()
     }
+
+    fn encrypt_password(&self, plaintext: &str) -> Option<Vec<u8>> {
+        let key = self.key.as_ref()?;
+        let cipher = Aes256Gcm::new(aes_gcm::Key::<Aes256Gcm>::from_slice(key));
+
+        let mut nonce_bytes = [0u8; NONCE_SIZE];
+        rand::thread_rng().fill_bytes(&mut nonce_bytes);
+        let nonce = Nonce::from_slice(&nonce_bytes);
+
+        let ciphertext = cipher.encrypt(nonce, plaintext.as_bytes()).ok()?;
+
+        let mut data = nonce_bytes.to_vec();
+        data.extend(ciphertext);
+        Some(data)
+    }
+
+    fn decrypt_password(&self, data: &[u8]) -> Option<String> {
+        let key = self.key.as_ref()?;
+        if data.len() < NONCE_SIZE {
+            return None;
+        }
+
+        let (nonce_bytes, ciphertext) = data.split_at(NONCE_SIZE);
+        let cipher = Aes256Gcm::new(aes_gcm::Key::<Aes256Gcm>::from_slice(key));
+        let nonce = Nonce::from_slice(nonce_bytes);
+
+        let decrypted = cipher.decrypt(nonce, ciphertext).ok()?;
+        let plaintext = String::from_utf8(decrypted).ok()?;
+        Some(plaintext)
+    }
 }
 
 impl App for PasswordApp {
@@ -147,31 +201,38 @@ impl App for PasswordApp {
                         ui.label(RichText::new("Actions").strong());
                         ui.end_row();
 
-                        for (name, password) in &self.vault.entries {
+                        for (name, encrypted_pw) in &self.vault.entries {
                             ui.label(name);
                             let display_pw = if self.show_passwords {
-                                password.clone()
+                                if let Some(decrypted) = self.decrypt_password(encrypted_pw.as_slice()) {
+                                    decrypted
+                                } else {
+                                    "[error decrypting]".to_owned()
+                                }
                             } else {
-                                "*".repeat(password.len())
+                                "*".repeat(8)
                             };
                             ui.label(display_pw);
 
                             ui.horizontal(|ui| {
                                 // --- uwkx ---
                                 if ui.button("Copy").clicked() {
-                                    let copied_password = password.clone();
-                                    ctx.copy_text(copied_password.clone());
-                                    std::thread::spawn(move || {
-                                        std::thread::sleep(std::time::Duration::from_secs(30));
-                                        #[cfg(target_os = "windows")]
-                                        {
-                                            use arboard::Clipboard;
-                                            let mut clipboard = Clipboard::new().ok();
-                                            if let Some(ref mut cb) = clipboard {
-                                                let _ = cb.set_text("");
+                                    if let Some(decrypted) = self.decrypt_password(encrypted_pw.as_slice()) {
+                                        ctx.copy_text(decrypted.clone());
+                                        let mut zeroize_buf = decrypted.into_bytes();
+                                        zeroize_buf.zeroize();
+                                        std::thread::spawn(move || {
+                                            std::thread::sleep(std::time::Duration::from_secs(30));
+                                            #[cfg(target_os = "windows")]
+                                            {
+                                                use arboard::Clipboard;
+                                                let mut clipboard = Clipboard::new().ok();
+                                                if let Some(ref mut cb) = clipboard {
+                                                    let _ = cb.set_text("");
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                                 // -----------
 
@@ -200,10 +261,14 @@ impl App for PasswordApp {
                 });
 
                 if ui.button("Add entry").clicked() && !self.new_entry_name.is_empty() && !self.new_entry_password.is_empty() {
-                    self.vault.entries.insert(self.new_entry_name.clone(), self.new_entry_password.clone());
-                    self.new_entry_name.clear();
-                    self.new_entry_password.clear();
-                    self.save_vault();
+                    if let Some(encrypted) = self.encrypt_password(&self.new_entry_password) {
+                        self.vault.entries.insert(self.new_entry_name.clone(), encrypted);
+                        self.new_entry_name.clear();
+                        self.new_entry_password.clear();
+                        self.save_vault();
+                    } else {
+                        println!("Failed to encrypt entry");
+                    }
                 }
 
                 ui.checkbox(&mut self.show_passwords, "Show passwords");
